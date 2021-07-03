@@ -33,7 +33,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
-        PhotonNetwork.LoadLevel("GameScene");
+        PhotonNetwork.LoadLevel("Level_01");
     }
 
     public override void OnConnectedToMaster()
@@ -66,6 +66,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
 
         Player[] players = PhotonNetwork.PlayerList;
+
+        foreach (Transform child in playerListContent)
+        {
+            Destroy(child.gameObject);
+        }
 
         for (int i = 0; i < players.Count(); i++)
         {
@@ -113,6 +118,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         for (int i = 0; i < roomList.Count; i++)
         {
+            if (roomList[i].RemovedFromList)
+                continue;
             Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
         }
     }
