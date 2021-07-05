@@ -15,11 +15,13 @@ public class PlayerController : MonoBehaviour
     Vector3 currentMovement;
     Vector3 currentRunMovement;
 
-    float runMultiplier = 3.0f;
+    public float runMultiplier = 6.0f;
+    public float moveSpeed = 3.0f;
+    public float rotationFactorPerFrame = 15.0f;
+
     bool isMovementPressed;
     bool isRunPressed;
 
-    float rotationFactorPerFrame = 15.0f;
 
     PhotonView PV;
     private void Awake()
@@ -44,8 +46,8 @@ public class PlayerController : MonoBehaviour
     private void OnMovementInput(InputAction.CallbackContext obj)
     {
         currentMovementInput = obj.ReadValue<Vector2>();
-        currentMovement.x = currentMovementInput.x;
-        currentMovement.z = currentMovementInput.y;
+        currentMovement.x = currentMovementInput.x * moveSpeed;
+        currentMovement.z = currentMovementInput.y * moveSpeed;
         currentRunMovement.x = currentMovementInput.x * runMultiplier;
         currentRunMovement.z = currentMovementInput.y * runMultiplier;
 
@@ -104,6 +106,8 @@ public class PlayerController : MonoBehaviour
     {
         if (!PV.IsMine)
             return;
+
+
         HandleAnimation();
         HandleGravity();
         HandleRotation();
