@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/projectSettingsUpdater.xml
+/.idea.Demon King.iml
+/contentModel.xml
+# Datasource local storage ignored files
+/../../../../../../../../../../:\Users\kyleg\Documents\Git Repo\Dead-Bear-Games\Demon King\.idea\.idea.Demon King\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
