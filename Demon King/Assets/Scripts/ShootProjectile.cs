@@ -6,29 +6,30 @@ using UnityEngine;
 public class ShootProjectile : MonoBehaviour
 {
     [SerializeField] private GameObject projectile;
+    // Drag & drop the main camera in the inspector
+    private Camera camera;
 
-    
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        if (projectile != null)
-        {
-            
-        }
+        camera = Camera.main;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Shoot()
     {
+        // Create a ray from the camera going through the middle of your screen
+        Ray ray = camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
+        RaycastHit hit ;
+        // Check whether your are pointing to something so as to adjust the direction
+        Vector3 targetPoint ;
+        if (Physics.Raycast(ray, out hit))
+            targetPoint = hit.point;
+        else
+            targetPoint = ray.GetPoint( 10 ) ; // You may need to change this value according to your needs
         
-    }
-
-    Void ShootProjectileInDirection()
-    {
         Vector3 shootDirection = transform.forward;
         GameObject newProjectile = Instantiate(projectile,shootDirection, Quaternion.identity);
 
-        newProjectile.transform.TransformDirection(shootDirection);
-        
+        newProjectile.GetComponent<Rigidbody>().velocity = (targetPoint - transform.position).normalized * 10; 
     }
+
 }
