@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Photon.Pun;
+
 
 public class CharacterLocoMotion : MonoBehaviour
 {
@@ -11,12 +14,22 @@ public class CharacterLocoMotion : MonoBehaviour
     public float moveSpeed;
 
     PlayerInput playerInput;
+    PhotonView PV;
 
     private void Awake()
     {
         playerInput = new PlayerInput();
         animator = GetComponent<Animator>();
         animator.SetFloat("MoveSpeed", moveSpeed);
+        PV = GetComponent<PhotonView>();
+    }
+    private void Start()
+    {
+        if (!PV.IsMine)
+        {
+            Destroy(GetComponentInChildren<Camera>().gameObject);
+            Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
+        }
     }
 
 

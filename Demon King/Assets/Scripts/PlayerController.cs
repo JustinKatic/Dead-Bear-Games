@@ -32,15 +32,17 @@ public class PlayerController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         PV = GetComponent<PhotonView>();
         
-        if (!PV.IsMine)
-            Destroy(GetComponentInChildren<Camera>().gameObject);
-        
-
         playerInput.CharacterControls.Move.started += OnMovementInput;
         playerInput.CharacterControls.Move.canceled += OnMovementInput;
         playerInput.CharacterControls.Move.performed += OnMovementInput;
         playerInput.CharacterControls.Run.started += OnRun;
         playerInput.CharacterControls.Run.canceled += OnRun;
+    }
+
+    private void Start()
+    {
+        if (!PV.IsMine)
+            Destroy(GetComponentInChildren<Camera>().gameObject);
     }
 
     private void OnRun(InputAction.CallbackContext obj)
