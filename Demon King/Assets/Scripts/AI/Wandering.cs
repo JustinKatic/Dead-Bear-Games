@@ -6,9 +6,9 @@ using UnityEngine.AI;
 public class Wandering : MonoBehaviour
 {
     private NavMeshAgent agent;
-    Vector3 _location;
-    private float _distanceToDestination = 0;
-    private Vector3 _previousDestination;
+    Vector3 location;
+    private float distanceToDestination = 0;
+    private Vector3 previousDestination;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,32 +19,32 @@ public class Wandering : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _distanceToDestination = Vector3.Distance(gameObject.transform.localPosition, _location);
+        distanceToDestination = Vector3.Distance(gameObject.transform.localPosition, location);
 
-        if (_location == Vector3.zero || _previousDestination == _location)
+        if (location == Vector3.zero || previousDestination == location)
         {
-            _location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
-            agent.SetDestination(_location);
+            location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
+            agent.SetDestination(location);
         }
 
-        if (_distanceToDestination <= 1)
+        if (distanceToDestination <= 1)
         {
-            _location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
-            agent.SetDestination(_location);
+            location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
+            agent.SetDestination(location);
         }
         if (Physics.Raycast(gameObject.transform.localPosition, gameObject.transform.TransformDirection(Vector3.forward), out RaycastHit hit,10))
         {
             if (hit.collider.tag == "Obstruction")
             {
-                _location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
-                agent.SetDestination(_location);
+                location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
+                agent.SetDestination(location);
             }
         }
 
         if (agent.velocity == Vector3.zero)
         {
-            _location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
-            agent.SetDestination(_location);
+            location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
+            agent.SetDestination(location);
         }
         
     }
