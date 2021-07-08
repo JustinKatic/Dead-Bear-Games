@@ -26,10 +26,15 @@ public class PlayerController : MonoBehaviour
     PhotonView PV;
     private void Awake()
     {
+
         playerInput = new PlayerInput();
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
         PV = GetComponent<PhotonView>();
+        
+        if (!PV.IsMine)
+            Destroy(GetComponentInChildren<Camera>().gameObject);
+        
 
         playerInput.CharacterControls.Move.started += OnMovementInput;
         playerInput.CharacterControls.Move.canceled += OnMovementInput;
