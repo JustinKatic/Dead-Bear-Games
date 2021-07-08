@@ -27,6 +27,7 @@ public class CharacterLocoMotion : MonoBehaviour
     {
         if (!PV.IsMine)
         {
+            Destroy(GetComponent<Rigidbody>());
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
         }
