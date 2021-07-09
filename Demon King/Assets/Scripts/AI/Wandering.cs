@@ -9,14 +9,13 @@ public class Wandering : MonoBehaviour
     Vector3 location;
     private float distanceToDestination = 0;
     private Vector3 previousDestination;
-    [SerializeField] private float stunTime = 2f;
-    private bool hasBeenStunned = false;
+    private MinionStunned stunned;
 
-    
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        stunned = GetComponent<MinionStunned>();
 
     }
 
@@ -24,7 +23,7 @@ public class Wandering : MonoBehaviour
     void Update()
     {
         //If the AI has not been stunned move to next position
-        if (!hasBeenStunned)
+        if (!stunned.IsStunned())
         {
             distanceToDestination = Vector3.Distance(gameObject.transform.localPosition, location);
 
@@ -68,17 +67,5 @@ public class Wandering : MonoBehaviour
         NavMesh.SamplePosition(randomDirection, out navHit, distance, layermask);
 
         return navHit.position;
-    }
-    
-    public void HasBeenStunned()
-    {
-        hasBeenStunned = true;
-        StartCoroutine(nameof(Stunned));
-    }
-    IEnumerator Stunned()
-    {
-        yield return new WaitForSeconds(stunTime);        
-        hasBeenStunned = false;
-
     }
 }

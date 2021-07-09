@@ -15,9 +15,8 @@ public class CharacterLocoMotion : MonoBehaviour
     CharacterMovement playerInput;
     PhotonView PV;
     private ShootProjectile shootProjectile;
-    [SerializeField] private float stunTime = 5;
-    
 
+    
     private void Awake()
     {
         playerInput = new CharacterMovement();
@@ -40,7 +39,6 @@ public class CharacterLocoMotion : MonoBehaviour
 
     private void Update()
     {
-
         input = playerInput.Movement.Move.ReadValue<Vector2>();
         
         animator.SetFloat("InputX", input.x);
@@ -63,17 +61,15 @@ public class CharacterLocoMotion : MonoBehaviour
         shootProjectile.Shoot();
     }
 
-    //Should be passed on to the Projectile Impact Event OnplayerImpact
-    //Disables the players movement for a set time
-    public void HasBeenStunned()
+    public void DisableControls()
     {
         playerInput.Movement.Disable();
-        StartCoroutine(Stunned());
 
     }
-    IEnumerator Stunned()
+    public void EnableControls()
     {
-        yield return new WaitForSeconds(stunTime);
         playerInput.Movement.Enable();
+
     }
+
 }

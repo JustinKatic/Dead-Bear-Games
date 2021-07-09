@@ -8,19 +8,19 @@ public class ProjectileImpact : MonoBehaviour
 {
     [SerializeField] private UnityEvent OnImpact;
     
-    
     private void OnCollisionEnter(Collision other)
     {
         string collidedObjectTag = other.transform.tag;
-        if (collidedObjectTag.Equals("Player"))
+        if (collidedObjectTag.Equals("Player") || collidedObjectTag.Equals("Minion") )
         {
-            other.gameObject.GetComponent<CharacterLocoMotion>().HasBeenStunned();
+            Stunned stunned = other.gameObject.GetComponent<Stunned>();
+            
+            if (!stunned.IsStunned())
+            {
+                stunned.HasBeenStunned();
+            }
         }
-
-        if ( collidedObjectTag.Equals("Minion"))
-        {
-            other.gameObject.GetComponent<Wandering>().HasBeenStunned();
-        }
+        
         OnImpact.Invoke();
         Destroy(this.gameObject);
     }
