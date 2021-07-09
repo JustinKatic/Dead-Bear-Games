@@ -9,6 +9,10 @@ public class Wandering : MonoBehaviour
     Vector3 location;
     private float distanceToDestination = 0;
     private Vector3 previousDestination;
+    [SerializeField] private float stunTime = 2f;
+    private bool hasBeenStunned = false;
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -19,33 +23,37 @@ public class Wandering : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        distanceToDestination = Vector3.Distance(gameObject.transform.localPosition, location);
+        //If the AI has not been stunned move to next position
+        if (!hasBeenStunned)
+        {
+            distanceToDestination = Vector3.Distance(gameObject.transform.localPosition, location);
 
-        if (location == Vector3.zero || previousDestination == location)
-        {
-            location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
-            agent.SetDestination(location);
-        }
+            if (location == Vector3.zero || previousDestination == location)
+            {
+                location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
+                agent.SetDestination(location);
+            }
 
-        if (distanceToDestination <= 1)
-        {
-            location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
-            agent.SetDestination(location);
-        }
-        if (Physics.Raycast(gameObject.transform.localPosition, gameObject.transform.TransformDirection(Vector3.forward), out RaycastHit hit,10))
-        {
-            if (hit.collider.tag == "Obstruction")
+            if (distanceToDestination <= 1)
+            {
+                location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
+                agent.SetDestination(location);
+            }
+
+            if (agent.velocity == Vector3.zero)
             {
                 location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
                 agent.SetDestination(location);
             }
         }
-
-        if (agent.velocity == Vector3.zero)
+        else
         {
-            location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
+            //Sets the position of the next movement to it's current position when stunned
+            distanceToDestination = 0;
+            location = transform.position;
             agent.SetDestination(location);
         }
+
         
     }
     
@@ -60,5 +68,17 @@ public class Wandering : MonoBehaviour
         NavMesh.SamplePosition(randomDirection, out navHit, distance, layermask);
 
         return navHit.position;
+    }
+    
+    public void HasBeenStunned()
+    {
+        hasBeenStunned = true;
+        StartCoroutine(nameof(Stunned));
+    }
+    IEnumerator Stunned()
+    {
+        yield return new WaitForSeconds(stunTime);        
+        hasBeenStunned = false;
+
     }
 }

@@ -15,7 +15,7 @@ public class CharacterLocoMotion : MonoBehaviour
     CharacterMovement playerInput;
     PhotonView PV;
     private ShootProjectile shootProjectile;
-    [SerializeField] private float stunTime;
+    [SerializeField] private float stunTime = 5;
     
 
     private void Awake()
