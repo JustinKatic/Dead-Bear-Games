@@ -12,13 +12,17 @@ public class CharacterLocoMotion : MonoBehaviour
     Animator animator;
     Vector2 input;
     public float moveSpeed;
-
-    PlayerInput playerInput;
+    CharacterMovement playerInput;
     PhotonView PV;
+    private ShootProjectile shootProjectile;
+    [SerializeField] private float stunTime;
+    
 
     private void Awake()
     {
-        playerInput = new PlayerInput();
+        playerInput = new CharacterMovement();
+        playerInput.Movement.Shoot.performed += OnFire;
+        shootProjectile = GetComponent<ShootProjectile>();
         animator = GetComponent<Animator>();
         animator.SetFloat("MoveSpeed", moveSpeed);
         PV = GetComponent<PhotonView>();
@@ -37,21 +41,39 @@ public class CharacterLocoMotion : MonoBehaviour
     private void Update()
     {
 
-        input = playerInput.CharacterControls.Move.ReadValue<Vector2>();
-
-        Debug.Log("X = " + input.x);
-        Debug.Log("Y = " + input.y);
+        input = playerInput.Movement.Move.ReadValue<Vector2>();
+        
         animator.SetFloat("InputX", input.x);
         animator.SetFloat("InputY", input.y);
     }
 
     private void OnEnable()
     {
-        playerInput.CharacterControls.Enable();
+        playerInput.Movement.Enable();
     }
 
     private void OnDisable()
     {
-        playerInput.CharacterControls.Disable();
+        playerInput.Movement.Disable();
+    }
+
+    void OnFire(InputAction.CallbackContext callback)
+    {
+        Debug.Log("Fire");
+        shootProjectile.Shoot();
+    }
+
+    //Should be passed on to the Projectile Impact Event OnplayerImpact
+    //Disables the players movement for a set time
+    public void HasBeenStunned()
+    {
+        playerInput.Movement.Disable();
+        StartCoroutine(Stunned());
+
+    }
+    IEnumerator Stunned()
+    {
+        yield return new WaitForSeconds(stunTime);
+        playerInput.Movement.Enable();
     }
 }

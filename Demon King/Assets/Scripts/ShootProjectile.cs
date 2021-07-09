@@ -2,10 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class ShootProjectile : MonoBehaviour
 {
     [SerializeField] private GameObject projectile;
+    [SerializeField] private Transform shootPosition;
+    [SerializeField] private float projectileSpeed;
+    
+    
     // Drag & drop the main camera in the inspector
     private Camera camera;
 
@@ -14,7 +19,7 @@ public class ShootProjectile : MonoBehaviour
         camera = Camera.main;
     }
 
-    private void Shoot()
+    public void Shoot()
     {
         // Create a ray from the camera going through the middle of your screen
         Ray ray = camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
@@ -25,11 +30,11 @@ public class ShootProjectile : MonoBehaviour
             targetPoint = hit.point;
         else
             targetPoint = ray.GetPoint( 10 ) ; // You may need to change this value according to your needs
+        Vector3 shootingPosition = shootPosition.position;
         
-        Vector3 shootDirection = transform.forward;
-        GameObject newProjectile = Instantiate(projectile,shootDirection, Quaternion.identity);
+        GameObject newProjectile = Instantiate(projectile,shootPosition.position, Quaternion.identity);
 
-        newProjectile.GetComponent<Rigidbody>().velocity = (targetPoint - transform.position).normalized * 10; 
+        newProjectile.GetComponent<Rigidbody>().velocity = (targetPoint - shootPosition.position).normalized * projectileSpeed; 
     }
 
 }
