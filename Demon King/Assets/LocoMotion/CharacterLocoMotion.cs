@@ -15,19 +15,30 @@ public class CharacterLocoMotion : MonoBehaviour
     CharacterMovement playerInput;
     PhotonView PV;
     private ShootProjectile shootProjectile;
-
+    private DevourEnemy devourEnemy;
     
     private void Awake()
     {
+        //Player Input
         playerInput = new CharacterMovement();
         playerInput.Movement.Shoot.performed += OnFire;
+        playerInput.Movement.Devour.performed += OnDevour;
+
+        
+        //Get Components off Player
         shootProjectile = GetComponent<ShootProjectile>();
+        devourEnemy = GetComponent<DevourEnemy>();
+        
+        //Player Animation
         animator = GetComponent<Animator>();
         animator.SetFloat("MoveSpeed", moveSpeed);
+        
+        //Networking
         PV = GetComponent<PhotonView>();
     }
     private void Start()
     {
+        //Makes Sure the player cant control others while networking
         if (!PV.IsMine)
         {
             Destroy(GetComponent<Rigidbody>());
@@ -40,7 +51,7 @@ public class CharacterLocoMotion : MonoBehaviour
     private void Update()
     {
         input = playerInput.Movement.Move.ReadValue<Vector2>();
-        
+
         animator.SetFloat("InputX", input.x);
         animator.SetFloat("InputY", input.y);
     }
@@ -57,15 +68,24 @@ public class CharacterLocoMotion : MonoBehaviour
 
     void OnFire(InputAction.CallbackContext callback)
     {
-        Debug.Log("Fire");
+        devourEnemy.canDevourEnemy = false;
         shootProjectile.Shoot();
+        
     }
 
+    void OnDevour(InputAction.CallbackContext callback)
+    {
+        devourEnemy.CheckIfEnemyIsInRange();
+
+    }
+
+    //Used to Disable controls if stunned
     public void DisableControls()
     {
         playerInput.Movement.Disable();
 
     }
+    //Used to Enable controls if stunned
     public void EnableControls()
     {
         playerInput.Movement.Enable();

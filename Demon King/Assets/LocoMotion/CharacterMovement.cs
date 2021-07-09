@@ -33,6 +33,22 @@ public class @CharacterMovement : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""a3a00534-26e1-4ff5-a0d3-049313e570ea"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Devour"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e3d9a0c-00b9-411f-898a-2d5199a8c48d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -101,6 +117,28 @@ public class @CharacterMovement : IInputActionCollection, IDisposable
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""585e0e20-78bb-41be-a633-29904cbf9104"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57855d5b-b554-4ee7-8741-2ed831cada67"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Devour"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -111,6 +149,8 @@ public class @CharacterMovement : IInputActionCollection, IDisposable
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
         m_Movement_Shoot = m_Movement.FindAction("Shoot", throwIfNotFound: true);
+        m_Movement_Jump = m_Movement.FindAction("Jump", throwIfNotFound: true);
+        m_Movement_Devour = m_Movement.FindAction("Devour", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -162,12 +202,16 @@ public class @CharacterMovement : IInputActionCollection, IDisposable
     private IMovementActions m_MovementActionsCallbackInterface;
     private readonly InputAction m_Movement_Move;
     private readonly InputAction m_Movement_Shoot;
+    private readonly InputAction m_Movement_Jump;
+    private readonly InputAction m_Movement_Devour;
     public struct MovementActions
     {
         private @CharacterMovement m_Wrapper;
         public MovementActions(@CharacterMovement wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Movement_Move;
         public InputAction @Shoot => m_Wrapper.m_Movement_Shoot;
+        public InputAction @Jump => m_Wrapper.m_Movement_Jump;
+        public InputAction @Devour => m_Wrapper.m_Movement_Devour;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -183,6 +227,12 @@ public class @CharacterMovement : IInputActionCollection, IDisposable
                 @Shoot.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnShoot;
+                @Jump.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnJump;
+                @Devour.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnDevour;
+                @Devour.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnDevour;
+                @Devour.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnDevour;
             }
             m_Wrapper.m_MovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -193,6 +243,12 @@ public class @CharacterMovement : IInputActionCollection, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
+                @Devour.started += instance.OnDevour;
+                @Devour.performed += instance.OnDevour;
+                @Devour.canceled += instance.OnDevour;
             }
         }
     }
@@ -201,5 +257,7 @@ public class @CharacterMovement : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnDevour(InputAction.CallbackContext context);
     }
 }
