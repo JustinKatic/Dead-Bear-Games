@@ -68,14 +68,18 @@ public class CharacterLocoMotion : MonoBehaviour
 
     void OnFire(InputAction.CallbackContext callback)
     {
-        devourEnemy.canDevourEnemy = false;
         shootProjectile.Shoot();
         
     }
 
     void OnDevour(InputAction.CallbackContext callback)
     {
+        //If able to devour Disable this controls
         devourEnemy.CheckIfEnemyIsInRange();
+        if (devourEnemy.isDevouringEnemy)
+        {
+            DisableControls();
+        }
 
     }
 
@@ -88,8 +92,7 @@ public class CharacterLocoMotion : MonoBehaviour
     //Used to Enable controls if stunned
     public void EnableControls()
     {
-        playerInput.Movement.Enable();
-
+        if (!devourEnemy.isDevouringEnemy)
+            playerInput.Movement.Enable();
     }
-
 }

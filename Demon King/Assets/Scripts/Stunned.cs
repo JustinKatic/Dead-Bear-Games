@@ -6,7 +6,8 @@ public class Stunned : MonoBehaviour
 {
     [SerializeField] private float stunTime = 5;
     private bool hasBeenStunned = false;
-    
+    [HideInInspector]public bool beingDevoured = false;
+
     //Should be passed on to the Projectile Impact Event OnplayerImpact
     //Disables the players movement for a set time
     public void HasBeenStunned()
@@ -18,8 +19,12 @@ public class Stunned : MonoBehaviour
     IEnumerator StunTimer()
     {
         yield return new WaitForSeconds(stunTime);
-        StunIsFinished();
-        hasBeenStunned = false;
+        //Make sure I am not currently being devoured
+        if (!beingDevoured)
+        {
+            StunIsFinished();
+            hasBeenStunned = false;
+        }
     }
 
     public bool IsStunned()
@@ -35,4 +40,14 @@ public class Stunned : MonoBehaviour
     {
         
     }
+
+    //Used for when this is being devoured but it is interrupted and not executed fully
+    public void DisableStun()
+    {
+        StopCoroutine(StunTimer());
+        StunIsFinished();
+        hasBeenStunned = false;
+    }
+    
+    
 }

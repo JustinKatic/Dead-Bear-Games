@@ -7,8 +7,12 @@ public class DevourEnemy : MonoBehaviour
 {
     private Camera camera;
     [SerializeField] private float devourCheckRange = 5;
+    [SerializeField] private float devourTime = 3;
     
-    public bool canDevourEnemy = false;
+    [HideInInspector]public bool isDevouringEnemy = false;
+
+    private GameObject enemyBeingDevoured;
+    private Stunned stunnedEnemy;
     private void Start()
     {
         camera = Camera.main;
@@ -25,17 +29,45 @@ public class DevourEnemy : MonoBehaviour
             string hitObjectTag = hit.transform.tag;
             if (hitObjectTag.Equals("Player") || hitObjectTag.Equals("Minion"))
             {
+                stunnedEnemy = hit.transform.gameObject.GetComponent<Stunned>();
                 //If the enemy is stunned it can now be Devoured
-                if (hit.transform.gameObject.GetComponent<Stunned>().IsStunned())
+                if (stunnedEnemy.IsStunned())
                 {
-                    StartDevouringEnemy();
+                    if (!isDevouringEnemy)
+                    {
+                        enemyBeingDevoured = hit.transform.gameObject;
+                        DisableOtherPlayer();
+                        StartDevouringEnemy();
+                    }
                 }
             }
         }
     }
+
+    public void DisableOtherPlayer()
+    {
+        stunnedEnemy.beingDevoured = true;
+        enemyBeingDevoured.GetComponent<CharacterLocoMotion>().DisableControls();
+    }
     
     private void StartDevouringEnemy()
     {
+        isDevouringEnemy = true;
+        StartCoroutine(DevouringEnemy());
         Debug.Log("Devouring");
+    }
+
+    IEnumerator DevouringEnemy()
+    {
+        yield return new WaitForSeconds(devourTime);
+        isDevouringEnemy = false;
+    }
+
+    private void InterruptDevouring()
+    {
+        stunnedEnemy.beingDevoured = false;
+        stunnedEnemy.DisableStun();
+        isDevouringEnemy = false;
+        StopCoroutine(DevouringEnemy());
     }
 }
