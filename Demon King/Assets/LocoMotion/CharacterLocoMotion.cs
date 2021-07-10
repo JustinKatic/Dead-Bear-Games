@@ -49,7 +49,7 @@ public class CharacterLocoMotion : MonoBehaviour
         }
     }
 
-    
+
 
     private void Update()
     {
@@ -65,18 +65,21 @@ public class CharacterLocoMotion : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!PV.IsMine)
+            return;
         playerInput.Movement.Enable();
     }
 
     private void OnDisable()
     {
+        if (!PV.IsMine)
+            return;
         playerInput.Movement.Disable();
     }
 
     void OnFire(InputAction.CallbackContext callback)
     {
         shootProjectile.Shoot();
-
     }
 
     void OnDevour(InputAction.CallbackContext callback)
