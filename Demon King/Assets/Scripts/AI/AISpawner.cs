@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class AISpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject agent;
-    [SerializeField] private int spawnLimit = 5;
+    [SerializeField] private GameObject agent = null;
+    //[SerializeField] private int spawnLimit = 5;
     [SerializeField] private List<Transform> spawnPositions = new List<Transform>();
-    
-    private List<Vector3> spawnLocations;
-    private int numberOfLocations;
 
-    
-    
+    private List<Vector3> spawnLocations = null;
+    private int numberOfLocations = 0;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,36 +25,27 @@ public class AISpawner : MonoBehaviour
         numberOfLocations = spawnLocations.Count;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private Vector3 RandomSpawnLocation()
     {
-        Vector3 randomLocation = Vector3.zero;
-        int position = 0;
+        int position = Random.Range(0, numberOfLocations - 1);
 
-        position = Random.Range(0, numberOfLocations - 1);
+        Vector3 randomLocation = spawnLocations[position];
 
-        randomLocation = spawnLocations[position];
-    
         return randomLocation;
-
     }
 
     private void SpawnNewAI()
     {
         Instantiate(agent, RandomSpawnLocation(), Quaternion.identity);
-        
+
     }
 
     private int AgentCount()
     {
         int count = 0;
-        
-        
+
+
 
         return count;
     }

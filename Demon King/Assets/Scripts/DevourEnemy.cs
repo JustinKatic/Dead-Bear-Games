@@ -3,27 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class DevourEnemy : MonoBehaviour
 {
-    private Camera camera;
-    [SerializeField] private float devourCheckRange = 5;
-    [SerializeField] private float devourTime = 3;
-    
-    [HideInInspector]public bool isDevouringEnemy = false;
+    private new Camera camera;
+    [SerializeField] private float devourCheckRange = 5f;
+    [SerializeField] private float devourTime = 3f;
 
-    private GameObject enemyBeingDevoured;
-    private Stunned stunnedEnemy;
+
+    [HideInInspector] public bool IsDevouringEnemy = false;
+
+    private CharacterControlls characterControlls;
+    private GameObject enemyBeingDevoured = null;
+    private Stunned stunnedEnemy = null;
+    private HealthManager healthManager;
+
+
     private void Start()
     {
         camera = Camera.main;
+        characterControlls = GetComponent<CharacterControlls>();
+        healthManager = GetComponent<HealthManager>();
     }
 
     public void CheckIfEnemyIsInRange()
     {
         // Create a ray from the camera going through the middle of your screen
-        Ray ray = camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));    
-        
-        if (Physics.Raycast(ray,out RaycastHit hit, devourCheckRange))
+        Ray ray = camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
+
+        if (Physics.Raycast(ray, out RaycastHit hit, devourCheckRange))
         {
             //Check object is either a player or minion
             string hitObjectTag = hit.transform.tag;
@@ -33,41 +41,43 @@ public class DevourEnemy : MonoBehaviour
                 //If the enemy is stunned it can now be Devoured
                 if (stunnedEnemy.IsStunned())
                 {
-                    if (!isDevouringEnemy)
+                    if (!IsDevouringEnemy)
                     {
                         enemyBeingDevoured = hit.transform.gameObject;
-                        DisableOtherPlayer();
-                        StartDevouringEnemy();
+                        StartCoroutine(DevouringEnemy());
                     }
                 }
             }
         }
     }
 
-    public void DisableOtherPlayer()
-    {
-        stunnedEnemy.beingDevoured = true;
-        enemyBeingDevoured.GetComponent<CharacterLocoMotion>().DisableControls();
-    }
-    
-    private void StartDevouringEnemy()
-    {
-        isDevouringEnemy = true;
-        StartCoroutine(DevouringEnemy());
-        Debug.Log("Devouring");
-    }
+
 
     IEnumerator DevouringEnemy()
     {
+        //When Devour starts
+        IsDevouringEnemy = true;
+        characterControlls.CanMove = false;
+        characterControlls.PlayDevourAnim = true;
+        enemyBeingDevoured.GetComponent<CharacterControlls>().CanMove = false;
+        stunnedEnemy.BeingDevoured = true;
+        healthManager.OverheadText.text = "Devouring";
+
+
         yield return new WaitForSeconds(devourTime);
-        isDevouringEnemy = false;
+
+        //When Devour finishs
+        Debug.Log("Devoured");
+        stunnedEnemy.GetComponent<HealthManager>().Die();
+        characterControlls.CanMove = true;
+        characterControlls.PlayDevourAnim = false;
     }
 
     private void InterruptDevouring()
     {
-        stunnedEnemy.beingDevoured = false;
+        stunnedEnemy.BeingDevoured = false;
         stunnedEnemy.DisableStun();
-        isDevouringEnemy = false;
+        IsDevouringEnemy = false;
         StopCoroutine(DevouringEnemy());
     }
 }

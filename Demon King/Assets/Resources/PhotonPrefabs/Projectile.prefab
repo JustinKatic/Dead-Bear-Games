@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3178777702569544771}
   - component: {fileID: -3986018433902744859}
   - component: {fileID: -1991641414899247619}
-  - component: {fileID: -3740973859955098977}
+  - component: {fileID: 7093791552704423364}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -110,7 +110,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -127,9 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a95a17f7b225c043a43e37b9c85fdd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnImpact:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &-1991641414899247619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,11 +145,12 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 7093791552704423364}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-3740973859955098977
+--- !u!114 &7093791552704423364
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,10 +159,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8535437870411969009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
+  m_TeleportEnabled: 1
+  m_TeleportIfDistanceGreaterThan: 5

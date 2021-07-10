@@ -1,28 +1,18 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ProjectileImpact : MonoBehaviour
+public class ProjectileImpact : MonoBehaviourPun
 {
-    [SerializeField] private UnityEvent OnImpact;
-    
     private void OnCollisionEnter(Collision other)
     {
-        string collidedObjectTag = other.transform.tag;
-        if (collidedObjectTag.Equals("Player") || collidedObjectTag.Equals("Minion") )
+        if (other.gameObject.tag == "Player")
         {
-            Stunned stunned = other.gameObject.GetComponent<Stunned>();
-            
-            if (!stunned.IsStunned())
-            {
-                stunned.HasBeenStunned();
-            }
+            other.gameObject.GetComponent<HealthManager>().TakeDamage(1);
         }
-        
-        OnImpact.Invoke();
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
-    
 }
