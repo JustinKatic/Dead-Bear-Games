@@ -16,7 +16,7 @@ public class CharacterLocoMotion : MonoBehaviour
     PhotonView PV;
     private ShootProjectile shootProjectile;
     private DevourEnemy devourEnemy;
-    
+
     private void Awake()
     {
         //Player Input
@@ -24,17 +24,19 @@ public class CharacterLocoMotion : MonoBehaviour
         playerInput.Movement.Shoot.performed += OnFire;
         playerInput.Movement.Devour.performed += OnDevour;
 
-        
+
         //Get Components off Player
         shootProjectile = GetComponent<ShootProjectile>();
         devourEnemy = GetComponent<DevourEnemy>();
-        
+
         //Player Animation
         animator = GetComponent<Animator>();
         animator.SetFloat("MoveSpeed", moveSpeed);
-        
+
         //Networking
         PV = GetComponent<PhotonView>();
+
+
     }
     private void Start()
     {
@@ -47,13 +49,18 @@ public class CharacterLocoMotion : MonoBehaviour
         }
     }
 
+    
 
     private void Update()
     {
+        if (!PV.IsMine)
+            return;
+
+
         input = playerInput.Movement.Move.ReadValue<Vector2>();
 
-        animator.SetFloat("InputX", input.x);
-        animator.SetFloat("InputY", input.y);
+        animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
+        animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
     }
 
     private void OnEnable()
@@ -69,7 +76,7 @@ public class CharacterLocoMotion : MonoBehaviour
     void OnFire(InputAction.CallbackContext callback)
     {
         shootProjectile.Shoot();
-        
+
     }
 
     void OnDevour(InputAction.CallbackContext callback)

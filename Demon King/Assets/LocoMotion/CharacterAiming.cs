@@ -21,7 +21,7 @@ public class CharacterAiming : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!PV)
+        if (!PV.IsMine)
             return;
 
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;

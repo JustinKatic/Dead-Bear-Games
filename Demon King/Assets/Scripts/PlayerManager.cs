@@ -16,10 +16,10 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         if (PV.IsMine)
-            Createontroller();
+            CreateController();
     }
 
-    void Createontroller()
+    void CreateController()
     {
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Player"), Vector3.zero, Quaternion.identity);
     }
