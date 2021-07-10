@@ -568,9 +568,9 @@ MonoBehaviour:
     ExtrapolateNumberOfStoredPositions: 1
   m_RotationModel:
     SynchronizeEnabled: 1
-    InterpolateOption: 2
-    InterpolateRotateTowardsSpeed: 1000
-    InterpolateLerpSpeed: 10
+    InterpolateOption: 1
+    InterpolateRotateTowardsSpeed: 180
+    InterpolateLerpSpeed: 15
   m_ScaleModel:
     SynchronizeEnabled: 0
     InterpolateOption: 0
