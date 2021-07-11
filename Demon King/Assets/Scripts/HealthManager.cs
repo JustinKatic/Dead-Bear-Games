@@ -19,6 +19,7 @@ public class HealthManager : MonoBehaviour
     private PhotonView PV;
 
 
+
     private void Awake()
     {
         stunned = gameObject.GetComponent<Stunned>();
@@ -51,7 +52,7 @@ public class HealthManager : MonoBehaviour
     }
 
 
-   
+
     public void TakeDamage(int damage)
     {
         if (CurrentHealth <= 0)
@@ -71,6 +72,7 @@ public class HealthManager : MonoBehaviour
 
     public void Die()
     {
-        playerManager.Die();
+        transform.position = GameObject.FindGameObjectWithTag("SpawnPos").transform.position;
+        //playerManager.Die();
     }
 }

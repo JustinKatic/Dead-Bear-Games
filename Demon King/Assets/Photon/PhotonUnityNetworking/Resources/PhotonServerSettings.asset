@@ -41,6 +41,7 @@ MonoBehaviour:
   - RPC_Stun
   - PrintSomthing
   - StunPlayer
+  - RPC_TakeDamage
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

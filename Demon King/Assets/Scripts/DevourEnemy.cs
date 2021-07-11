@@ -67,10 +67,12 @@ public class DevourEnemy : MonoBehaviour
         yield return new WaitForSeconds(devourTime);
 
         //When Devour finishs
-        Debug.Log("Devoured");
-        stunnedEnemy.GetComponent<HealthManager>().Die();
+        healthManager.OverheadText.text = "Finished Devouring";
+        IsDevouringEnemy = false;
         characterControlls.CanMove = true;
         characterControlls.PlayDevourAnim = false;
+        stunnedEnemy.GetComponent<HealthManager>().Die();
+        stunnedEnemy.GetComponent<HealthManager>().OverheadText.text = "Devoured";
     }
 
     private void InterruptDevouring()
