@@ -14,7 +14,7 @@ public class DevourEnemy : MonoBehaviour
     [HideInInspector] public bool IsDevouringEnemy = false;
 
     private CharacterControlls characterControlls;
-    private GameObject enemyBeingDevoured = null;
+    private PhotonView enemyBeingDevoured = null;
     private HealthManager enemyHealthManager;
     private Stunned stunnedEnemy = null;
     private HealthManager healthManager;
@@ -49,8 +49,7 @@ public class DevourEnemy : MonoBehaviour
                 //If the enemy is stunned it can now be Devoured
                 if (stunnedEnemy.IsStunned())
                 {
-                    enemyBeingDevoured = hit.transform.gameObject;
-                    enemyHealthManager = enemyBeingDevoured.GetComponent<HealthManager>();
+                    enemyBeingDevoured = hit.transform.gameObject.GetComponent<PhotonView>();
                     StartCoroutine(DevouringEnemy());
                 }
             }
@@ -59,24 +58,26 @@ public class DevourEnemy : MonoBehaviour
 
 
     [PunRPC]
-    void OnDevourStart()
+    void OnDevourStart(int viewID)
     {
-        stunnedEnemy.BeingDevoured = true;
-        enemyHealthManager.OverheadText.text = "Being Devoured";
+        PhotonView view = PhotonView.Find(viewID);
+        view.gameObject.GetComponent<Stunned>().BeingDevoured = true;
+        view.gameObject.GetComponent<HealthManager>().OverheadText.text = "being devoured";
     }
 
     [PunRPC]
-    void OnDevourFinished()
+    void OnDevourFinished(int viewID)
     {
-        stunnedEnemy.BeingDevoured = false;
-        enemyHealthManager.OverheadText.text = "DEAD";
+        PhotonView view = PhotonView.Find(viewID);
+        view.gameObject.GetComponent<Stunned>().BeingDevoured = false;
+        view.gameObject.GetComponent<HealthManager>().OverheadText.text = "DEAD";
     }
 
 
     IEnumerator DevouringEnemy()
     {
         //When Devour starts
-        PV.RPC("OnDevourStart", RpcTarget.All);
+        PV.RPC("OnDevourStart", RpcTarget.All, new object[] { enemyBeingDevoured.ViewID });
         IsDevouringEnemy = true;
         characterControlls.CanMove = false;
         characterControlls.PlayDevourAnim = true;
@@ -87,7 +88,7 @@ public class DevourEnemy : MonoBehaviour
         yield return new WaitForSeconds(devourTime);
 
         //When Devour finishs
-        PV.RPC("OnDevourFinished", RpcTarget.All);
+        PV.RPC("OnDevourFinished", RpcTarget.All, new object[] { enemyBeingDevoured.ViewID });
         healthManager.OverheadText.text = "Finished Devouring";
         IsDevouringEnemy = false;
         characterControlls.CanMove = true;
