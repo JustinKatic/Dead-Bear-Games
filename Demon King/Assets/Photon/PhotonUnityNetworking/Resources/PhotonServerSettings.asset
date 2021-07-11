@@ -42,6 +42,10 @@ MonoBehaviour:
   - PrintSomthing
   - StunPlayer
   - RPC_TakeDamage
+  - RPC_StunFinished
+  - RPC_StunStarted
+  - OnDevourFinished
+  - OnDevourStart
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

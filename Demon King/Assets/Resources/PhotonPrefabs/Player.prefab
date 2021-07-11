@@ -523,8 +523,8 @@ GameObject:
   - component: {fileID: 2119426331133627223}
   - component: {fileID: 5879094273774839862}
   - component: {fileID: -1237607456364257548}
-  - component: {fileID: -7853049470060889622}
   - component: {fileID: 5418754291029754424}
+  - component: {fileID: -8948571655831849272}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -732,20 +732,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &-7853049470060889622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6001361731343829530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25083a5ec04af5247ba557490972f67d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stunTime: 5
-  BeingDevoured: 0
 --- !u!114 &5418754291029754424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -763,6 +749,20 @@ MonoBehaviour:
   OverheadText: {fileID: 3188046709086511255}
   TimeBeforeHealthRegen: 5
   regenTimer: 0
+--- !u!114 &-8948571655831849272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6001361731343829530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f83ce9c8dd6aa4e958b5950d6ba40d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stunTime: 5
+  BeingDevoured: 0
 --- !u!1 &6001794702588892787
 GameObject:
   m_ObjectHideFlags: 0

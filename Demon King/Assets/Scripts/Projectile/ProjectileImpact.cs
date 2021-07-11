@@ -14,15 +14,16 @@ public class ProjectileImpact : MonoBehaviourPun
     }
     private void OnCollisionEnter(Collision other)
     {
-        if (!myPV.IsMine)
-            return;
-        if (other.gameObject.tag == "Player")
+        if (myPV.IsMine)
         {
-            PhotonView PV = other.transform.GetComponent<PhotonView>();
-            if (PV)
+            if (other.gameObject.tag == "Player")
             {
-                Debug.Log("Collided with: "+PV.name);
-                PV.RPC("RPC_TakeDamage", RpcTarget.All, 1);
+                PhotonView PV = other.transform.GetComponent<PhotonView>();
+                if (PV)
+                {
+                    Debug.Log("Collided with: " + PV.name);
+                    PV.RPC("RPC_TakeDamage", RpcTarget.All, 1);
+                }
             }
         }
         Destroy(gameObject);

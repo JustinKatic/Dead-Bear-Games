@@ -73,6 +73,7 @@ public class HealthManager : MonoBehaviour
     }
 
 
+
     public void Die()
     {
         transform.position = GameObject.FindGameObjectWithTag("SpawnPos").transform.position;
