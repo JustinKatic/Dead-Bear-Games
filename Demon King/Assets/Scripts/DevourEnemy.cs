@@ -15,6 +15,7 @@ public class DevourEnemy : MonoBehaviour
 
     private CharacterControlls characterControlls;
     private GameObject enemyBeingDevoured = null;
+    private HealthManager enemyHealthManager;
     private Stunned stunnedEnemy = null;
     private HealthManager healthManager;
 
@@ -49,6 +50,7 @@ public class DevourEnemy : MonoBehaviour
                 if (stunnedEnemy.IsStunned())
                 {
                     enemyBeingDevoured = hit.transform.gameObject;
+                    enemyHealthManager = enemyBeingDevoured.GetComponent<HealthManager>();
                     StartCoroutine(DevouringEnemy());
                 }
             }
@@ -60,14 +62,14 @@ public class DevourEnemy : MonoBehaviour
     void OnDevourStart()
     {
         stunnedEnemy.BeingDevoured = true;
-        stunnedEnemy.GetComponent<HealthManager>().OverheadText.text = "Being Devoured";
+        enemyHealthManager.OverheadText.text = "Being Devoured";
     }
 
     [PunRPC]
     void OnDevourFinished()
     {
         stunnedEnemy.BeingDevoured = false;
-        stunnedEnemy.GetComponent<HealthManager>().OverheadText.text = "DEAD";
+        enemyHealthManager.OverheadText.text = "DEAD";
     }
 
 

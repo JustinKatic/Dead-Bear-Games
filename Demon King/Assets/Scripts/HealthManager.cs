@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 
-public class HealthManager : MonoBehaviour
+public class HealthManager : MonoBehaviourPun
 {
     public int MaxHealth = 3;
     public int CurrentHealth = 0;

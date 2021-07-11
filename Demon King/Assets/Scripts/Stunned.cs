@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 
 
-public class Stunned : MonoBehaviour
+public class Stunned : MonoBehaviourPun
 {
 
     [SerializeField] private float stunTime = 5;
