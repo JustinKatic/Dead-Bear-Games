@@ -7,14 +7,22 @@ using UnityEngine.Events;
 
 public class ProjectileImpact : MonoBehaviourPun
 {
+    PhotonView myPV;
+    private void Awake()
+    {
+        myPV = GetComponent<PhotonView>();
+    }
     private void OnCollisionEnter(Collision other)
     {
+        if (!myPV.IsMine)
+            return;
         if (other.gameObject.tag == "Player")
         {
             PhotonView PV = other.transform.GetComponent<PhotonView>();
             if (PV)
             {
-                PV.RPC("RPC_TakeDamage", RpcTarget.All, 1 as object);
+                Debug.Log("Collided with: "+PV.name);
+                PV.RPC("RPC_TakeDamage", RpcTarget.All, 1);
             }
         }
         Destroy(gameObject);

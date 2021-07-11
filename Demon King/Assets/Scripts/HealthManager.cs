@@ -51,14 +51,13 @@ public class HealthManager : MonoBehaviour
         }
     }
 
+
+
     [PunRPC]
     void RPC_TakeDamage(int damage)
     {
-        if (!PV.IsMine)
-            return;
-
-        if (CurrentHealth <= 0)
-            return;
+            if (CurrentHealth <= 0)
+                return;
 
         //If Current health is > 0 take damage 
         CurrentHealth -= 1;
