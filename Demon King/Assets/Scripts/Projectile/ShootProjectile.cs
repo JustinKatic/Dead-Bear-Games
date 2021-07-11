@@ -11,7 +11,6 @@ public class ShootProjectile : MonoBehaviour
     [SerializeField] private Transform shootPosition = null;
     [SerializeField] private float projectileSpeed = 20;
 
-    [SerializeField] private float bulletLifeTime = 3f;
 
 
     private new Camera camera;
@@ -37,9 +36,6 @@ public class ShootProjectile : MonoBehaviour
         GameObject newProjectile = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Projectile"), shootingPosition, Quaternion.identity);
 
         newProjectile.GetComponent<Rigidbody>().velocity = (targetPoint - shootingPosition).normalized * projectileSpeed;
-
-        //Destroy bullet after x seconds
-        Destroy(newProjectile, bulletLifeTime);
     }
 
 }

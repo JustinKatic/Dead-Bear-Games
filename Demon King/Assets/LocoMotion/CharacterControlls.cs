@@ -12,6 +12,7 @@ public class CharacterControlls : MonoBehaviour
     public float moveSpeed;
     public float turnSpeed = 15;
     public bool PlayDevourAnim = false;
+    public bool PlayStunAnim = false;
 
     [HideInInspector] public bool CanMove = true;
 
@@ -34,7 +35,7 @@ public class CharacterControlls : MonoBehaviour
 
         //disable and lock cursoe
         //Cursor.visible = false;
-       //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         //Get Components off Player
         mainCamera = Camera.main;
@@ -70,6 +71,12 @@ public class CharacterControlls : MonoBehaviour
             return;
 
         if (PlayDevourAnim)
+        {
+            animator.SetFloat("InputX", 0, 0.1f, Time.deltaTime);
+            animator.SetFloat("InputY", 0, 0.1f, Time.deltaTime);
+        }
+
+        if (PlayStunAnim)
         {
             animator.SetFloat("InputX", 0, 0.1f, Time.deltaTime);
             animator.SetFloat("InputY", 0, 0.1f, Time.deltaTime);

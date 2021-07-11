@@ -49,13 +49,18 @@ public class Stunned : MonoBehaviourPun
         Debug.Log("StunTimer");
         healthManager.OverheadText.text = "Stunned";
         characterControlls.CanMove = false;
+        characterControlls.PlayStunAnim = true;
+
         yield return new WaitForSeconds(stunTime);
+
         if (!BeingDevoured)
         {
             PV.RPC("RPC_StunFinished", RpcTarget.All);
             characterControlls.CanMove = true;
             healthManager.CurrentHealth = 3;
             healthManager.OverheadText.text = healthManager.CurrentHealth.ToString();
+            characterControlls.PlayStunAnim = false;
+
         }
     }
 }

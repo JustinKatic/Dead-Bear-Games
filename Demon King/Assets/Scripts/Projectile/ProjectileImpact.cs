@@ -8,9 +8,12 @@ using UnityEngine.Events;
 public class ProjectileImpact : MonoBehaviourPun
 {
     PhotonView myPV;
+    float bulletLifeTime = 3f;
     private void Awake()
     {
         myPV = GetComponent<PhotonView>();
+        //Destroy bullet after x seconds
+        Destroy(gameObject, bulletLifeTime);
     }
     private void OnCollisionEnter(Collision other)
     {
