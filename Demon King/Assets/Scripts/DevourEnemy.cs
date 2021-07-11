@@ -19,6 +19,7 @@ public class DevourEnemy : MonoBehaviour
     private HealthManager healthManager;
 
 
+
     private void Start()
     {
         camera = Camera.main;

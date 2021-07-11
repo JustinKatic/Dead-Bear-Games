@@ -51,10 +51,12 @@ public class HealthManager : MonoBehaviour
         }
     }
 
-
-
-    public void TakeDamage(int damage)
+    [PunRPC]
+    void RPC_TakeDamage(int damage)
     {
+        if (!PV.IsMine)
+            return;
+
         if (CurrentHealth <= 0)
             return;
 
@@ -62,6 +64,7 @@ public class HealthManager : MonoBehaviour
         CurrentHealth -= 1;
         OverheadText.text = CurrentHealth.ToString();
         regenTimer = TimeBeforeHealthRegen;
+        Debug.Log(CurrentHealth);
 
         //If current health is < 0 stun the character
         if (CurrentHealth <= 0)
@@ -69,6 +72,7 @@ public class HealthManager : MonoBehaviour
             stunned.Stun();
         }
     }
+
 
     public void Die()
     {

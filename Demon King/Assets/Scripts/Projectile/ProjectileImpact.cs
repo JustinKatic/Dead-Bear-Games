@@ -11,7 +11,11 @@ public class ProjectileImpact : MonoBehaviourPun
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<HealthManager>().TakeDamage(1);
+            PhotonView PV = other.transform.GetComponent<PhotonView>();
+            if (PV)
+            {
+                PV.RPC("RPC_TakeDamage", RpcTarget.All, 1 as object);
+            }
         }
         Destroy(gameObject);
     }

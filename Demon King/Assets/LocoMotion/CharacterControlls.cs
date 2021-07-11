@@ -33,8 +33,8 @@ public class CharacterControlls : MonoBehaviour
             return;
 
         //disable and lock cursoe
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+       //Cursor.lockState = CursorLockMode.Locked;
 
         //Get Components off Player
         mainCamera = Camera.main;
