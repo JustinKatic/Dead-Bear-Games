@@ -21,6 +21,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     [SerializeField] GameObject startGameButton;
 
+    List<RoomInfo> rooms = new List<RoomInfo>();
+
     private void Awake()
     {
         Instance = this;
@@ -111,17 +113,34 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        foreach (Transform trans in roomListContent)
+        foreach (var ri in roomList)
         {
-            Destroy(trans.gameObject);
+            if (ri.RemovedFromList)
+                rooms.Remove(FindRoom(ri.Name));
+            else if (FindRoom(ri.Name) == null)
+                rooms.Add(ri);
         }
 
-        for (int i = 0; i < roomList.Count; i++)
+        foreach (Transform transform in roomListContent)
         {
-            if (roomList[i].RemovedFromList)
-                continue;
-            Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
+            Destroy(transform.gameObject);
         }
+
+        foreach (RoomInfo ri in rooms)
+        {
+            Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(ri);
+        }
+    }
+
+    RoomInfo FindRoom(string name)
+    {
+        for (int i = 0; i < rooms.Count; i++)
+        {
+            if (rooms[i].Name == name)
+                return rooms[i];
+        }
+
+        return null;
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
