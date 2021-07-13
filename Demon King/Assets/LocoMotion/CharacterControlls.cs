@@ -122,12 +122,18 @@ public class CharacterControlls : MonoBehaviour
     void OnFire(InputAction.CallbackContext callback)
     {
         //call Shoot()
+        if (!CanMove)
+            return;
+
         shootProjectile.Shoot();
     }
 
     //When OnDevour input action is performed
     void OnDevour(InputAction.CallbackContext callback)
     {
+        if (!CanMove)
+            return;
+
         devourEnemy.CheckIfEnemyIsInRange();
         if (devourEnemy.IsDevouringEnemy)
         {

@@ -15,7 +15,6 @@ public class DevourEnemy : MonoBehaviour
 
     private CharacterControlls characterControlls;
     private PhotonView enemyBeingDevoured = null;
-    private HealthManager enemyHealthManager;
     private Stunned stunnedEnemy = null;
     private HealthManager healthManager;
 
@@ -63,6 +62,7 @@ public class DevourEnemy : MonoBehaviour
         PhotonView view = PhotonView.Find(viewID);
         view.gameObject.GetComponent<Stunned>().BeingDevoured = true;
         view.gameObject.GetComponent<HealthManager>().OverheadText.text = "being devoured";
+        healthManager.OverheadText.text = "Devouring";
     }
 
     [PunRPC]
@@ -71,6 +71,8 @@ public class DevourEnemy : MonoBehaviour
         PhotonView view = PhotonView.Find(viewID);
         view.gameObject.GetComponent<Stunned>().BeingDevoured = false;
         view.gameObject.GetComponent<HealthManager>().OverheadText.text = "DEAD";
+        view.gameObject.GetComponent<HealthManager>().Die();
+        healthManager.OverheadText.text = "Finished Devouring";
     }
 
 
@@ -81,7 +83,6 @@ public class DevourEnemy : MonoBehaviour
         IsDevouringEnemy = true;
         characterControlls.CanMove = false;
         characterControlls.PlayDevourAnim = true;
-        healthManager.OverheadText.text = "Devouring";
 
 
 
@@ -89,7 +90,6 @@ public class DevourEnemy : MonoBehaviour
 
         //When Devour finishs
         PV.RPC("OnDevourFinished", RpcTarget.All, new object[] { enemyBeingDevoured.ViewID });
-        healthManager.OverheadText.text = "Finished Devouring";
         IsDevouringEnemy = false;
         characterControlls.CanMove = true;
         characterControlls.PlayDevourAnim = false;

@@ -75,8 +75,7 @@ public class HealthManager : MonoBehaviourPun
 
 
     public void Die()
-    {
-        transform.position = GameObject.FindGameObjectWithTag("SpawnPos").transform.position;
-        //playerManager.Die();
+    {       
+        playerManager.Die();
     }
 }

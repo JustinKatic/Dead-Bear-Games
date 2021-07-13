@@ -568,6 +568,7 @@ MonoBehaviour:
   moveSpeed: 1
   turnSpeed: 15
   PlayDevourAnim: 0
+  PlayStunAnim: 0
   CanMove: 1
 --- !u!114 &6626286785415951046
 MonoBehaviour:
@@ -668,7 +669,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootPosition: {fileID: 703566231}
   projectileSpeed: 20
-  bulletLifeTime: 3
 --- !u!114 &2119426331133627223
 MonoBehaviour:
   m_ObjectHideFlags: 0
